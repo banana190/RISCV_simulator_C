@@ -1,20 +1,71 @@
-// program.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <vector>
+#include <conio.h>
+#include "Decode.h"
+#include "Fetch.h"
+#include "Display.h"
+
+using namespace std;
+
+vector<string> originalInstruction;
+
+vector<string> binaryInstruction;
+
+int instructionMode() {
+    return 0;
+}
+
+int cycleMode() {
+    return 0;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    cout << "Welcome to  Wang and Chen's Simulation Program!\n";
+    
+    int mode;
+    bool flag = true;
+
+    vector<string> s;
+
+    //allow user to choose mode or to quit
+    while (flag) {
+        fflush(stdin);
+        cout << "\n------------------------------------------------------------------------------------------------\n";
+        cout << "What kind of mode you want to select\n";
+        cout << "1 Instruction mode\n";
+        cout << "2 Cycle mode\n";
+        cout << "3 exit\n";
+        
+        cin >> mode;
+        switch (mode) {
+        //actual function
+        case 1: 
+            instructionMode();  
+            cout << "enter any char to continue\n";
+            _getch(); 
+            break;
+        case 2: 
+            cycleMode(); 
+            cout << "enter any char to continue\n";
+            _getch(); 
+            break;
+        case 3: flag = false; break;
+
+
+        //for test
+        case 4: originalInstruction = fetch1(); break;
+        case 5: print(originalInstruction); break;
+        case 6: binaryInstruction = decode(originalInstruction); break;
+        case 7: print(binaryInstruction); break;
+
+        default:
+            cout << "Wrong Number\n";
+            flag = false; break;
+        }
+        fflush(stdin);
+    }
+
+    cout << "\nHave a good day!\n";
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
