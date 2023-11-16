@@ -42,12 +42,12 @@ int main()
         //actual function
         case 1: 
             instructionMode();  
-            cout << "enter any char to continue\n";
+            cout << "press anything to continue\n";
             _getch(); 
             break;
         case 2: 
             cycleMode(); 
-            cout << "enter any char to continue\n";
+            cout << "press anything to continue\n";
             _getch(); 
             break;
         case 3: flag = false; break;
@@ -57,7 +57,7 @@ int main()
         case 4: originalInstruction = fetch1(); break;
         case 5: print(originalInstruction); break;
         case 6: binaryInstruction = decode(originalInstruction); break;
-        case 7: print(binaryInstruction); break;
+        case 7: decode(originalInstruction); break;
 
         default:
             cout << "Wrong Number\n";
