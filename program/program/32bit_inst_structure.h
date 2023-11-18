@@ -15,6 +15,7 @@ public:
     string func_3;
     string rd;
     string opcode;
+    void execute();
 };
 
 class I_inst // addi lw andi ori slti sltiu
@@ -28,6 +29,7 @@ public:
     string func3;
     string rd;
     string opcode;
+    void execute();
 };
 
 class S_inst // sw
@@ -41,6 +43,7 @@ public:
     string rs1;
     string imm4_0;
     string opcode;
+    void execute();
 };
 
 class B_inst // beq
@@ -57,6 +60,7 @@ public:
     string imm4_1;
     string imm11;
     string opcode;
+    void execute();
 };
 
 class U_inst // lui
@@ -68,4 +72,5 @@ public:
     string imm;
     string rd;
     string opcode;
+    void execute();
 };
