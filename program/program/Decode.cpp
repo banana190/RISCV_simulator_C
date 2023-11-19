@@ -9,22 +9,18 @@
 
 using namespace std;
 
-const  map<string, vector<string>> instructionTemplate = {
+const  map<string, vector<string>> instruction_template = {
     // R type
     // add x0,x0,x0
-    // type index(used for clasify) opcode func7
-    {"add",{"R", "0", "0110011", "0000000"}},
-    {"sub",{"R", "0", "0110011", "0100000"} },
+    //     type index opcode        func7   func3
+    {"add",{"R", "0", "0110011", "0000000", "000"}},
+    {"sub",{"R", "0", "0110011", "0100000", "000"}},
+    {"sll",{"R", "0", "0110011", "0000000", "001"}},
+    {"srl",{"R", "0", "0110011", "0000000", "101"}},
+    {"and",{"R", "0", "0110011", "0000000", "111"}},
+    {"or", {"R", "0", "0110011", "0000000", "110"}},
+    {"mul",{"R", "0", "0110011", "0000001", "000"}},
 
-
-    {"sll",{"R","0", "0110011", "0000000"} },
-    {"srl",{"R","0", "0110011", "0000000"} },
-    {"and",{"R","0", "0110011", "0000000"} },
-    {"or",{"R","0", "0110011", "0000000"} },
-    //mul x0,x0 
-    {"mul",{"R","5"} },
-    // beq x0,x0,L1
-    {"beq",{"R","7"} },
 
     // I type
     {"lw",{"I","8"} },
@@ -34,14 +30,14 @@ const  map<string, vector<string>> instructionTemplate = {
     {"addi",{"I","12"}},
     {"slti",{"I","13"} },
     {"sltiu",{"I","14"} },
-
+    {"beq",{"I", "0", "0110011", "0000001", "000"}},
     // U type
     {"lui",{"U","15"} }
 };
 
 const  map<string, string> reg = {
     {"x0","00000"},
-     {"x1","00001"},
+    {"x1","00001"},
     {"x2","00010"}
 };
 
@@ -62,31 +58,78 @@ vector<string> split(const string& s, char delim) {
 }
 
 
-// For add and sub
-vector<string> decode1(vector<string> s) {
+string change_decimal_to_binary(string n) {
+    int a = stoi(n);
+    if (a == 0) {
+        return "0";
+    }
+
+    string binary = "";
+
+    // Convert decimal to binary
+    while (a > 0) {
+        // Prepend the remainder to the binary string
+        binary = to_string(a % 2) + binary;
+        a /= 2;
+    }
+
+    while (binary.size() < 5) {
+        binary = "0" + binary;
+    }
+
+    return binary;
+}
+
+
+
+// For add,sub,sll,srl,and or mul
+Instruction decode_r(vector<string> s) {
+    Instruction ins;
     vector<string> result;
-    string opcode = instructionTemplate.find(s[0])->second[2];
-    string func7  = instructionTemplate.find(s[0])->second[3];
-    string func3 = "000";
+    
+    ins.opcode = instruction_template.find(s[0])->second[2];
+    ins.func7  = instruction_template.find(s[0])->second[3];
+    ins.func3  = instruction_template.find(s[0])->second[4];;
 
     //x0,x0,x0 -> [x0, x0, x0]
     vector<string> split_result = split(s[1], ',');
-    string rd = reg.find(split_result[0])->second;
-    string rs1 = reg.find(split_result[1])->second;
-    string rs2 = reg.find(split_result[2])->second;
-
-    result.push_back(func7);
-    result.push_back(rs2);
-    result.push_back(rs1);
-    result.push_back(func3);
-    result.push_back(rd);
-    result.push_back(opcode);
-
-    for (int i = 0; i < result.size(); i++) {
-        cout << result[i] << endl;
+    ins.rd  = reg.find(split_result[0])->second;
+    ins.rs1 = reg.find(split_result[1])->second;
+    if (split_result[2][0] != 'x') {
+        ins.rs2 = change_decimal_to_binary(split_result[2]);
+    }
+    else {
+        ins.rs2 = reg.find(split_result[2])->second;
     }
 
-    return result;
+    ins.binary_ins = ins.func7 + ins.rs2 + ins.rs1 + ins.func3 + ins.rd + ins.opcode;
+
+    return ins;
+}
+
+// For beq
+Instruction decode_beq(vector<string> s) {
+    Instruction ins;
+    vector<string> result;
+
+    ins.opcode = instruction_template.find(s[0])->second[2];
+    ins.func7 = instruction_template.find(s[0])->second[3];
+    ins.func3 = instruction_template.find(s[0])->second[4];;
+
+    //x0,x0,x0 -> [x0, x0, x0]
+    vector<string> split_result = split(s[1], ',');
+    ins.rd = reg.find(split_result[0])->second;
+    ins.rs1 = reg.find(split_result[1])->second;
+    if (split_result[2][0] != 'x') {
+        ins.rs2 = change_decimal_to_binary(split_result[2]);
+    }
+    else {
+        ins.rs2 = reg.find(split_result[2])->second;
+    }
+
+    ins.binary_ins = ins.func7 + ins.rs2 + ins.rs1 + ins.func3 + ins.rd + ins.opcode;
+
+    return ins;
 }
 
 
@@ -101,7 +144,7 @@ vector<string> decode(vector<string> instruction) {
         map<string, int> jump;
 
         //store all instruction
-        map<int, vector<string>> seperate_results;
+       vector<Instruction> instructions;
 
         //store one instruction
         vector<string> split_result;
@@ -114,7 +157,10 @@ vector<string> decode(vector<string> instruction) {
             if (split_result[0] != instruction[i]) {
                 if (jump.find(split_result[0]) != jump.end()) {
                     int temp = jump.find(split_result[0])->second;
-                    seperate_results.find(temp)->second.push_back(to_string(i));
+
+                    //TODO
+
+                    instructions[temp].rd = change_decimal_to_binary(to_string(i));
                 }
                 split_result.erase(split_result.begin());
             }
@@ -123,21 +169,43 @@ vector<string> decode(vector<string> instruction) {
             // add x0,x0,x0 
             // split_result[0] =add  split_result[1]=x0,x0,x0
             split_result = split(split_result[0],' ');
-            
-            int index = stoi(instructionTemplate.find(split_result[0])->second[1]);
-            vector<string> tempV;
+            //second   ==>    {"R", "0", "0110011", "0000000","000"}
+            //secondp[1] = 0, this is the index for switch
+            int index = stoi(instruction_template.find(split_result[0])->second[1]);
+            Instruction tempV;
+
             // translate into binary code
             switch (index) {
             case 0:
-                //for add/sub
-                tempV = decode1(split_result);
+                //for R instruction
+                tempV = decode_r(split_result);
                 break;
-            case 1: break;
+            case 1: //for beq
+                tempV = decode_beq(split_result);
+                break;
             }
            
             
-            seperate_results.insert({ i,tempV });
+            tempV.original_ins = instruction[i];
+            tempV.instruction_name = split_result[0];
+            tempV.type = instruction_template.find(split_result[0])->second[0];
 
+            //add jump
+            if (!tempV.jump.empty()) {
+                jump.insert({tempV.rd, i});
+            }
+
+            cout << tempV.original_ins << endl;
+            cout << tempV.type << endl;
+            cout << tempV.instruction_name << endl;
+            cout << tempV.opcode << endl;
+            cout << tempV.func7 << endl;
+            cout << tempV.rd << endl;
+            cout << tempV.rs1 << endl;
+            cout << tempV.rs2 << endl;
+            cout << tempV.binary_ins << endl;
+
+            instructions.push_back(tempV);
         }
 
         return s;

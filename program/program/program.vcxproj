@@ -133,13 +133,18 @@
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="32bit_inst_structure.h" />
     <ClInclude Include="Decode.h" />
     <ClInclude Include="Display.h" />
+    <ClInclude Include="execution.h" />
     <ClInclude Include="Fetch.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="program.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="program.aps" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
