@@ -12,34 +12,34 @@ using namespace std;
 const  map<string, vector<string>> instruction_template = {
     // R type
     // add x0,x0,x0
-    //     type index opcode        func7   func3
-    {"add",{"R", "0", "0110011", "0000000", "000"}},
-    {"sub",{"R", "0", "0110011", "0100000", "000"}},
-    {"sll",{"R", "0", "0110011", "0000000", "001"}},
-    {"srl",{"R", "0", "0110011", "0000000", "101"}},
-    {"and",{"R", "0", "0110011", "0000000", "111"}},
-    {"or", {"R", "0", "0110011", "0000000", "110"}},
-    {"mul",{"R", "0", "0110011", "0000001", "000"}},
+    //     type index opcode        func7   func3   kind
+    {"add",{"R", "0", "0110011", "0000000", "000", "1"}},
+    {"sub",{"R", "0", "0110011", "0100000", "000", "2"}},
+    {"sll",{"R", "0", "0110011", "0000000", "001", "3"}},
+    {"srl",{"R", "0", "0110011", "0000000", "101", "4"}},
+    {"and",{"R", "0", "0110011", "0000000", "111", "5"}},
+    {"or", {"R", "0", "0110011", "0000000", "110", "6"}},
+    {"mul",{"R", "0", "0110011", "0000001", "000", "7"}},
 
 
     // I type
     //nomal
     //       type index func3   opcode
-    {"andi",{"I","1", "111", "0010011"}},
-    {"ori", {"I","1", "110", "0010011"} },
-    {"addi",{"I","1", "000", "0010011"}},
-    {"slti",{"I","1", "010", "0010011"} },
-    {"sltiu",{"I","1", "011", "0010011"} },
+    {"andi",{"I","1", "111", "0010011", "8"}},
+    {"ori", {"I","1", "110", "0010011", "9"} },
+    {"addi",{"I","1", "000", "0010011", "10"}},
+    {"slti",{"I","1", "010", "0010011", "11"} },
+    {"sltiu",{"I","1", "011", "0010011", "12"} },
     //sw/lw 
    //     type index func3   opcode
-   {"lw",{"I", "2", "010", "0000011"}},
-   {"sw",{"I", "3", "010", "0100011"}},
+   {"lw",{"I", "2", "010", "0000011", "13"}},
+   {"sw",{"I", "3", "010", "0100011", "14"}},
     //beq
     //      type index func3   opcode
-    {"beq",{"I", "4",  "000", "1100011"}},
+    {"beq",{"I", "4",  "000", "1100011", "15"}},
     // U type
     //      type index opcode
-    {"lui",{"U","5", "0110111"}}
+    {"lui",{"U","5", "0110111", "16"}}
 };
 
 const  map<string, string> reg = {
@@ -99,6 +99,7 @@ Instruction decode_r(vector<string> s) {
     ins.opcode = instruction_template.find(s[0])->second[2];
     ins.func7  = instruction_template.find(s[0])->second[3];
     ins.func3  = instruction_template.find(s[0])->second[4];
+    ins.kind = stoi(instruction_template.find(s[0])->second[5]);
 
     //x0,x0,x0 -> [x0, x0, x0]
     vector<string> split_result = split(s[1], ',');
@@ -123,6 +124,7 @@ Instruction decode_i(vector<string> s) {
 
     ins.func3 = instruction_template.find(s[0])->second[2];
     ins.opcode = instruction_template.find(s[0])->second[3];
+    ins.kind = stoi(instruction_template.find(s[0])->second[4]);
    
     // x0,x1,1 -> [x0,x1,1]
     vector<string> split_result = split(s[1], ',');
@@ -142,6 +144,7 @@ Instruction decode_lw(vector<string> s) {
 
     ins.func3 = instruction_template.find(s[0])->second[2];
     ins.opcode = instruction_template.find(s[0])->second[3];
+    ins.kind = stoi(instruction_template.find(s[0])->second[4]);
 
     vector<string> split_result = split(s[1], ',');
     ins.rd = reg.find(split_result[0])->second;
@@ -164,6 +167,7 @@ Instruction decode_sw(vector<string> s) {
 
     ins.func3 = instruction_template.find(s[0])->second[2];
     ins.opcode = instruction_template.find(s[0])->second[3];
+    ins.kind = stoi(instruction_template.find(s[0])->second[4]);
 
     vector<string> split_result = split(s[1], ',');
     ins.rs1 = reg.find(split_result[0])->second;
@@ -186,8 +190,9 @@ Instruction decode_beq(vector<string> s) {
     Instruction ins;
     vector<string> result;
 
-    ins.func3 = instruction_template.find(s[0])->second[3];
-    ins.opcode = instruction_template.find(s[0])->second[4];
+    ins.func3 = instruction_template.find(s[0])->second[2];
+    ins.opcode = instruction_template.find(s[0])->second[3];
+    ins.kind = stoi(instruction_template.find(s[0])->second[4]);
 
     //x0,x0,L1 -> [x0, x0, 1]
     vector<string> split_result = split(s[1], ',');
@@ -203,6 +208,7 @@ Instruction decode_lui(vector<string> s) {
     vector<string> result;
 
     ins.opcode = instruction_template.find(s[0])->second[2];
+    ins.kind = stoi(instruction_template.find(s[0])->second[3]);
 
     //x0,231213 -> [x0, ]
     vector<string> split_result = split(s[1], ',');
