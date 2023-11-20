@@ -7,7 +7,8 @@
 
 using namespace std;
 // I use vector as register, from register[0]~register[31](32 registers) -Danny
-vector<int> register;
+vector<int> registers;
+vector<char> memory(2048);
 
 vector<string> originalInstruction;
 
@@ -65,10 +66,10 @@ int main()
             originalInstruction = fetch1();
             break;
         case 5:
-            print(decoded_instruction);
+            print(originalInstruction);
             break;
         case 6:
-            decoded_instruction = decode(originalInstruction);
+            binaryInstruction = decode(originalInstruction);
             break;
         case 7:
             decode(originalInstruction);

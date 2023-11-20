@@ -13,8 +13,8 @@ int main()
     vector<string> instructions;
     vector<inst *> inst_containers;
 
-    if (!instructions.empty())
-    {
-        inst_containers.push_back(type_classifyer(instructions));
-    }
+    // if (!instructions.empty())
+    // {
+    //     inst_containers.push_back(type_classifyer(instructions));
+    // }
 }

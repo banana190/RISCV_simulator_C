@@ -19,6 +19,8 @@ public:
 	string imm2 = "";
 	string binary_ins = "";
 	string jump = "";
+	string imm = "";
+	int ALUOutput = 0;
 };
 
 vector<Instruction> decode(vector<string> instruction);
