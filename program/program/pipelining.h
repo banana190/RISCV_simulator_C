@@ -9,10 +9,11 @@ using std::vector;
 extern vector<uint8_t> memory;
 extern vector<uint32_t> registers;
 
-void run_pipelining(vector<Instruction> instructions)
+vector<Instruction> run_pipelining(vector<Instruction> instructions,vector<Instruction> pipelining,int cycle)
 {
-    queue<Instruction> q;
-    for (int i = 0; i < instructions.size(); i++)
+    pipelining.push_back(instructions[cycle]);
+    for (int i = 0; i < 5; i++)
     {
+        
     }
 }
