@@ -11,7 +11,7 @@ vector<int> register;
 
 vector<string> originalInstruction;
 
-vector<string> binaryInstruction;
+vector<Instruction> decoded_instruction;
 
 int instructionMode()
 {
@@ -60,19 +60,24 @@ int main()
             flag = false;
             break;
 
+
         // for test
         case 4:
             originalInstruction = fetch1();
             break;
         case 5:
-            print(originalInstruction);
+            print(decoded_instruction);
             break;
         case 6:
-            binaryInstruction = decode(originalInstruction);
+            decoded_instruction = decode(originalInstruction);
             break;
         case 7:
             decode(originalInstruction);
             break;
+        case 8: decoded_instruction = decode(originalInstruction); break;
+        case 9: print(decoded_instruction); break;
+        case 10: decode(originalInstruction); break;
+
 
         default:
             cout << "Wrong Number\n";

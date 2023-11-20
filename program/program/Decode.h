@@ -3,10 +3,6 @@
 
 using namespace std;
 
-vector<string> decode(vector<string> instruction);
-
-vector<string> split(const string& s, char delim);
-
 
 class Instruction {
 public:
@@ -14,6 +10,8 @@ public:
 	string type = "";					//R
 	string instruction_name = "";			//add
 	string opcode = "";					//0010100
+	string imm1 = "";
+	string imm2 = "";
 	string func7 = "";
 	string func3 = "";
 	string rd = "";
@@ -22,3 +20,8 @@ public:
 	string binary_ins = "";
 	string jump = "";
 };
+
+
+vector<Instruction> decode(vector<string> instruction);
+
+vector<string> split(const string& s, char delim);
