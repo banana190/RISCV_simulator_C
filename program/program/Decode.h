@@ -5,15 +5,15 @@ using namespace std;
 
 vector<string> decode(vector<string> instruction);
 
-vector<string> split(const string& s, char delim);
+vector<string> split(const string &s, char delim);
 
-
-class Instruction {
+class Instruction
+{
 public:
-	string original_ins = "";				//add x0,x0,x0
-	string type = "";					//R
-	string instruction_name = "";			//add
-	string opcode = "";					//0010100
+	string original_ins = "";	  // add x0,x0,x0
+	string type = "";			  // R
+	string instruction_name = ""; // add
+	string opcode = "";			  // 0010100
 	string func7 = "";
 	string func3 = "";
 	string rd = "";
