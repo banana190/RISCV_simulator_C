@@ -121,8 +121,8 @@ Instruction decode_i(vector<string> s) {
     Instruction ins;
     vector<string> result;
 
-    ins.func3 = instruction_template.find(s[0])->second[3];
-    ins.opcode = instruction_template.find(s[0])->second[4];
+    ins.func3 = instruction_template.find(s[0])->second[2];
+    ins.opcode = instruction_template.find(s[0])->second[3];
    
     // x0,x1,1 -> [x0,x1,1]
     vector<string> split_result = split(s[1], ',');
@@ -135,7 +135,7 @@ Instruction decode_i(vector<string> s) {
     return ins;
 }
 
-// For i
+// For lw
 Instruction decode_lw(vector<string> s) {
     Instruction ins;
     vector<string> result;
@@ -157,7 +157,7 @@ Instruction decode_lw(vector<string> s) {
     return ins;
 }
 
-// For i
+// For sw
 Instruction decode_sw(vector<string> s) {
     Instruction ins;
     vector<string> result;

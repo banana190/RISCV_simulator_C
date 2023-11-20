@@ -65,10 +65,10 @@ int main()
             originalInstruction = fetch1();
             break;
         case 5:
-            print(originalInstruction);
+            print(decoded_instruction);
             break;
         case 6:
-            binaryInstruction = decode(originalInstruction);
+            decoded_instruction = decode(originalInstruction);
             break;
         case 7:
             decode(originalInstruction);
