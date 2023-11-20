@@ -4,7 +4,7 @@
 #include "Decode.h"
 #include "Fetch.h"
 #include "Display.h"
-
+#include "pipelining.h"
 using namespace std;
 // I use vector as register, from register[0]~register[31](32 registers) -Danny
 vector<uint32_t> registers(32, 0);
@@ -12,11 +12,16 @@ vector<uint32_t> registers(32, 0);
 vector<uint8_t> memory(2048, 0);
 
 vector<string> original_instruction;
-
+vector<Instruction> pipelines;
 vector<Instruction> decoded_instruction;
 
 int instructionMode()
 {
+    int cycle;
+    for (cycle = 0; cycle <= (original_instruction.size() + 3); cycle++)
+    {
+        pipelines = run_pipelining(decoded_instruction, pipelines, cycle);
+    }
     return 0;
 }
 
