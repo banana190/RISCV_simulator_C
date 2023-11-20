@@ -11,7 +11,7 @@ vector<int> register;
 
 vector<string> originalInstruction;
 
-vector<string> binaryInstruction;
+vector<Instruction> decoded_instruction;
 
 int instructionMode()
 {

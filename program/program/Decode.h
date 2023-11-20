@@ -22,3 +22,7 @@ public:
 	string binary_ins = "";
 	string jump = "";
 };
+
+vector<Instruction> decode(vector<string> instruction);
+
+vector<string> split(const string &s, char delim);

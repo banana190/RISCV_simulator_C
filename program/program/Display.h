@@ -3,4 +3,4 @@
 
 using namespace std;
 
-void print(vector<string> s);
+void print(vector<Instruction> instructions);
