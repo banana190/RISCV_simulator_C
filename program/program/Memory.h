@@ -9,7 +9,6 @@ extern vector<int> registers;
 
 int Lw(Instruction loading)
 {
-
     int rd = std::bitset<32>(loading.rd).to_ulong();
     int rs1 = std::bitset<32>(loading.rs1).to_ulong();
     int LMD = loading.ALUOutput + registers[rs1];
