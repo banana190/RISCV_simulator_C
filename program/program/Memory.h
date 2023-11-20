@@ -4,10 +4,10 @@
 #include "Decode.h"
 using std::string;
 using std::vector;
-extern vector<char> memory;
-extern vector<int> registers;
+extern vector<uint8_t> memory;
+extern vector<uint32_t> registers;
 
-int Lw(Instruction loading)
+int Lw_mem(Instruction loading)
 {
     int rd = std::bitset<32>(loading.rd).to_ulong();
     int rs1 = std::bitset<32>(loading.rs1).to_ulong();
@@ -15,7 +15,7 @@ int Lw(Instruction loading)
     return LMD;
 }
 
-int Sw(Instruction storing)
+int Sw_mem(Instruction storing)
 {
     int rd = std::bitset<32>(storing.rd).to_ulong();
     int rs1 = std::bitset<32>(storing.rs1).to_ulong();
@@ -23,7 +23,7 @@ int Sw(Instruction storing)
     return LMD;
 }
 
-int Beq(Instruction branching)
+int Beq_mem(Instruction branching)
 {
     if (branching.ALUOutput == 1)
     {

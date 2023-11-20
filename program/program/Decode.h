@@ -21,6 +21,8 @@ public:
 	string jump = "";
 	string imm = "";
 	int ALUOutput = 0;
+	long long int mul_ALUOutput = 0;
+	int LMD = 0;
 };
 
 vector<Instruction> decode(vector<string> instruction);

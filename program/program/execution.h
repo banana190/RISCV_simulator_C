@@ -5,7 +5,7 @@
 #include "Decode.h"
 using std::string;
 using std::vector;
-extern vector<int> registers;
+extern vector<uint32_t> registers;
 vector<int> ALU_control_input(vector<string> ALU_input)
 {
 }
@@ -70,7 +70,7 @@ vector<int> ALU_control_input(vector<string> ALU_input)
 //     return temp;
 // }
 
-int Add(Instruction adding)
+int Add_ex(Instruction adding)
 {
     int rd = std::bitset<32>(adding.rd).to_ulong();
     int rs1 = std::bitset<32>(adding.rs1).to_ulong();
@@ -80,7 +80,7 @@ int Add(Instruction adding)
     return ALUOutput;
 }
 
-int Sub(Instruction subtracting)
+int Sub_ex(Instruction subtracting)
 {
     int rd = std::bitset<32>(subtracting.rd).to_ulong();
     int rs1 = std::bitset<32>(subtracting.rs1).to_ulong();
@@ -90,7 +90,7 @@ int Sub(Instruction subtracting)
     return ALUOutput;
 }
 
-int Addi(Instruction addiing)
+int Addi_ex(Instruction addiing)
 {
     int rd = std::bitset<32>(addiing.rd).to_ulong();
     int rs1 = std::bitset<32>(addiing.rs1).to_ulong();
@@ -100,7 +100,7 @@ int Addi(Instruction addiing)
     return ALUOutput;
 }
 
-long long int Mul(Instruction multipling)
+long long int Mul_ex(Instruction multipling)
 {
     int rd = std::bitset<32>(multipling.rd).to_ulong();
     int rs1 = std::bitset<32>(multipling.rs1).to_ulong();
@@ -120,7 +120,7 @@ long long int Mul(Instruction multipling)
     // registers[rd + 1] = last32Bits.to_ulong();
 }
 // MEMORY part WIP
-int Lw(Instruction loading)
+int Lw_ex(Instruction loading)
 {
     int rd = std::bitset<32>(loading.rd).to_ulong();
     int rs1 = std::bitset<32>(loading.rs1).to_ulong();
@@ -129,7 +129,7 @@ int Lw(Instruction loading)
     return ALUOutput;
 }
 
-int Sw(Instruction storing)
+int Sw_ex(Instruction storing)
 {
     int rd = std::bitset<32>(storing.rd).to_ulong();
     int rs1 = std::bitset<32>(storing.rs1).to_ulong();
@@ -137,7 +137,7 @@ int Sw(Instruction storing)
     int ALUOutput = registers[rs1] + imm;
     return ALUOutput;
 }
-int Beq(Instruction branching)
+int Beq_ex(Instruction branching)
 {
     int rd = std::bitset<32>(branching.rd).to_ulong();
     int rs1 = std::bitset<32>(branching.rs1).to_ulong();
@@ -146,7 +146,7 @@ int Beq(Instruction branching)
     return ALUOutput;
 }
 //-----------------------------------------
-int Lui(Instruction loading_upper)
+int Lui_ex(Instruction loading_upper)
 {
     int temp = std::bitset<32>(loading_upper.rd).to_ulong();
     std::bitset<32> imm(loading_upper.imm);
@@ -160,7 +160,7 @@ int Lui(Instruction loading_upper)
     return ALUOutput;
 }
 
-int And(Instruction anding)
+int And_ex(Instruction anding)
 {
     int temp_rd = std::bitset<32>(anding.rd).to_ulong();   // e.g. temp_rd = 5
     int temp_rs1 = std::bitset<32>(anding.rs1).to_ulong(); // temp_rs1 = 6
@@ -173,7 +173,7 @@ int And(Instruction anding)
     return ALUOutput;
 }
 
-int Andi(Instruction andiing)
+int Andi_ex(Instruction andiing)
 {
     int temp_rd = std::bitset<32>(andiing.rd).to_ulong();
     int temp_rs1 = std::bitset<32>(andiing.rs1).to_ulong();
@@ -185,7 +185,7 @@ int Andi(Instruction andiing)
     return ALUOutput;
 }
 
-int Or(Instruction oring)
+int Or_ex(Instruction oring)
 {
     int temp_rd = std::bitset<32>(oring.rd).to_ulong();   // e.g. temp_rd = 5
     int temp_rs1 = std::bitset<32>(oring.rs1).to_ulong(); // temp_rs1 = 6
@@ -197,7 +197,7 @@ int Or(Instruction oring)
     int ALUOutput = rd.to_ulong();
     return ALUOutput;
 }
-int Ori(Instruction oriing)
+int Ori_ex(Instruction oriing)
 {
     int temp_rd = std::bitset<32>(oriing.rd).to_ulong();
     int temp_rs1 = std::bitset<32>(oriing.rs1).to_ulong();
@@ -208,7 +208,7 @@ int Ori(Instruction oriing)
     int ALUOutput = rd.to_ulong();
     return ALUOutput;
 }
-int Sll(Instruction Lshifting)
+int Sll_ex(Instruction Lshifting)
 {
     int temp_rd = std::bitset<32>(Lshifting.rd).to_ulong();   // e.g. temp_rd = 5
     int temp_rs1 = std::bitset<32>(Lshifting.rs1).to_ulong(); // temp_rs1 = 6
@@ -220,7 +220,7 @@ int Sll(Instruction Lshifting)
     return ALUOutput;
 }
 
-int Srl(Instruction Rshifting)
+int Srl_ex(Instruction Rshifting)
 {
     int temp_rd = std::bitset<32>(Rshifting.rd).to_ulong();
     int temp_rs1 = std::bitset<32>(Rshifting.rs1).to_ulong();
@@ -232,7 +232,7 @@ int Srl(Instruction Rshifting)
     return ALUOutput;
 }
 
-int Slti(Instruction less_than)
+int Slti_ex(Instruction less_than)
 {
     int rd = std::bitset<32>(less_than.rd).to_ulong();
     int rs1 = std::bitset<32>(less_than.rs1).to_ulong();
@@ -242,7 +242,7 @@ int Slti(Instruction less_than)
     return ALUOutput;
 }
 
-int Sltiu(Instruction less_than)
+int Sltiu_ex(Instruction less_than)
 {
     int rd = std::bitset<32>(less_than.rd).to_ulong();
     int rs1 = std::bitset<32>(less_than.rs1).to_ulong();

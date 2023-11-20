@@ -7,8 +7,9 @@
 
 using namespace std;
 // I use vector as register, from register[0]~register[31](32 registers) -Danny
-vector<int> registers;
-vector<char> memory(2048);
+vector<uint32_t> registers(32, 0);
+// 2KB memory (2048 bytes) little endian
+vector<uint8_t> memory(2048, 0);
 
 vector<string> originalInstruction;
 
