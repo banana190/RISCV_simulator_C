@@ -130,9 +130,9 @@ Instruction decode_i(vector<string> s) {
     vector<string> split_result = split(s[1], ',');
     ins.rd = reg.find(split_result[0])->second;
     ins.rs1 = reg.find(split_result[1])->second;
-    ins.imm1 = change_decimal_to_binary(split_result[2], 12);
+    ins.imm = change_decimal_to_binary(split_result[2], 12);
 
-    ins.binary_ins = ins.imm1 + ins.rs1  + ins.func3 + ins.rd + ins.opcode;
+    ins.binary_ins = ins.imm + ins.rs1  + ins.func3 + ins.rd + ins.opcode;
 
     return ins;
 }
@@ -153,9 +153,9 @@ Instruction decode_lw(vector<string> s) {
     vector<string> temp = split(split_result[1], '(');
     temp[1].pop_back();
     ins.rs1 = reg.find(temp[1])->second;
-    ins.imm1 = change_decimal_to_binary(temp[0], 12);
-    
-    ins.binary_ins = ins.imm1 + ins.rs1 + ins.func3 + ins.rd + ins.opcode;
+    ins.imm = change_decimal_to_binary(temp[0], 12);
+
+    ins.binary_ins = ins.imm + ins.rs1 + ins.func3 + ins.rd + ins.opcode;
 
     return ins;
 }
@@ -176,10 +176,10 @@ Instruction decode_sw(vector<string> s) {
     vector<string> temp = split(split_result[1], '(');
     temp[1].pop_back();
     ins.rs2 = reg.find(temp[1])->second;
-    ins.imm1 = change_decimal_to_binary(temp[0], 7);
-    ins.imm2 = change_decimal_to_binary(temp[0], 5);
+    ins.imm = change_decimal_to_binary(temp[0], 12);
+    ins.imm1 = ins.imm.substr(0, 7);
+    ins.imm2 = ins.imm.substr(7, 5);
     
-   
 
     ins.binary_ins = ins.imm1 + ins.rs2 + ins.rs1 + ins.func3 + ins.imm2 + ins.opcode;
 
@@ -214,9 +214,9 @@ Instruction decode_lui(vector<string> s) {
     vector<string> split_result = split(s[1], ',');
     ins.rd = reg.find(split_result[0])->second;
     string temp = split_result[1];
-    ins.imm1 = change_decimal_to_binary(temp,20);
+    ins.imm = change_decimal_to_binary(temp,20);
 
-    ins.binary_ins = ins.imm1 + ins.rd + ins.opcode;
+    ins.binary_ins = ins.imm + ins.rd + ins.opcode;
 
     return ins;
 }
