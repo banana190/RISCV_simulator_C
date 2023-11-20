@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Decode.cpp" />
     <ClCompile Include="Display.cpp" />
+    <ClCompile Include="Execution.cpp" />
     <ClCompile Include="Fetch.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
@@ -138,7 +139,10 @@
     <ClInclude Include="Display.h" />
     <ClInclude Include="execution.h" />
     <ClInclude Include="Fetch.h" />
+    <ClInclude Include="Memory.h" />
+    <ClInclude Include="pipelining.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="WriteBack.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="program.rc" />

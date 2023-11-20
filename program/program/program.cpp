@@ -11,7 +11,7 @@ vector<uint32_t> registers(32, 0);
 // 2KB memory (2048 bytes) little endian
 vector<uint8_t> memory(2048, 0);
 
-vector<string> originalInstruction;
+vector<string> original_instruction;
 
 vector<Instruction> decoded_instruction;
 
@@ -64,16 +64,16 @@ int main()
 
         // for test
         case 4:
-            originalInstruction = fetch1();
+            original_instruction = fetch1();
             break;
         case 5:
-            print(originalInstruction);
+            print(decoded_instruction);
             break;
         case 6:
-            binaryInstruction = decode(originalInstruction);
+            decoded_instruction = decode(original_instruction);
             break;
         case 7:
-            decode(originalInstruction);
+            decode(original_instruction);
             break;
 
         default:
