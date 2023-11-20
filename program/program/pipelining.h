@@ -14,7 +14,7 @@ extern vector<uint32_t> registers;
 
 vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Instruction> pipelining, int cycle)
 {
-    pipelining.push_back(instructions[cycle]);
+    pipelining.insert(pipelining.begin(), instructions[cycle]);
     if (pipelining[2].instruction_name != "")
     {
         switch (pipelining[2].kind)
