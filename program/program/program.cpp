@@ -18,6 +18,8 @@ vector<Instruction> decoded_instruction;
 
 int instructionMode()
 {
+    // original_instruction and decoded_instruction are both empty.
+    // I'll figure out the input format is "sample.g" or not tmrw.
     unsigned int cycle;
     for (cycle = 0; cycle <= (original_instruction.size() + 3); cycle++)
     {
