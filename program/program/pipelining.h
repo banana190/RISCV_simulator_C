@@ -102,7 +102,7 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             pipelining[3].LMD = Lw_mem(pipelining[3]);
             break;
         case 6:
-            pipelining[3].LMD = Sw_mem(pipelining[3]);
+            Sw_mem(pipelining[3]);
             break;
         case 7:
             pipelining[3].LMD = Beq_mem(pipelining[3]);
@@ -167,5 +167,6 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
     }
     pipelines[2] = pipelines[1];
     pipelines[1] = pipelines[0];
+    pipelines.erase(pipelines.begin() + 5);
     return pipelining;
 }

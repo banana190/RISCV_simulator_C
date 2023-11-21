@@ -104,11 +104,7 @@ void Lw_wb(Instruction loading)
 
 void Sw_wb(Instruction storing)
 {
-    int rd = std::bitset<32>(storing.rd).to_ulong();
-    memory[storing.LMD + 3] = (registers[rd] >> 24) & 0xFF;
-    memory[storing.LMD + 2] = (registers[rd] >> 16) & 0xFF;
-    memory[storing.LMD + 1] = (registers[rd] >> 8) & 0xFF;
-    memory[storing.LMD] = registers[rd] & 0xFF;
+    // nothing to do here
 }
 
 void Beq_wb(Instruction branching)
