@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <bitset>
@@ -9,7 +10,7 @@ extern vector<uint32_t> registers;
 
 int Lw_mem(Instruction loading)
 {
-    int rd = std::bitset<32>(loading.rd).to_ulong();
+    // int rd = std::bitset<32>(loading.rd).to_ulong();
     int rs1 = std::bitset<32>(loading.rs1).to_ulong();
     int LMD = loading.ALUOutput + registers[rs1];
     return LMD;
@@ -17,7 +18,7 @@ int Lw_mem(Instruction loading)
 
 int Sw_mem(Instruction storing)
 {
-    int rd = std::bitset<32>(storing.rd).to_ulong();
+    // int rd = std::bitset<32>(storing.rd).to_ulong();
     int rs1 = std::bitset<32>(storing.rs1).to_ulong();
     int LMD = storing.ALUOutput + registers[rs1];
     return LMD;
@@ -30,4 +31,6 @@ int Beq_mem(Instruction branching)
         int LMD = std::bitset<32>(branching.imm).to_ulong();
         return LMD;
     }
+    else
+        return 0;
 }

@@ -104,4 +104,5 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             Sltiu_wb(pipelining[4]);
         }
     }
+    return pipelining;
 }

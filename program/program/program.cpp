@@ -17,7 +17,7 @@ vector<Instruction> decoded_instruction;
 
 int instructionMode()
 {
-    int cycle;
+    unsigned int cycle;
     for (cycle = 0; cycle <= (original_instruction.size() + 3); cycle++)
     {
         pipelines = run_pipelining(decoded_instruction, pipelines, cycle);
