@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <conio.h>
+#include <cstdint>
 #include "Decode.h"
 #include "Fetch.h"
 #include "Display.h"
