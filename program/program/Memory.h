@@ -29,7 +29,7 @@ int Beq_mem(Instruction branching)
 {
     if (branching.ALUOutput == 1)
     {
-        int LMD = std::bitset<32>(branching.imm).to_ulong();
+        int LMD = std::bitset<32>(branching.imm).to_ulong(); // need more information and fix this
         return LMD;
     }
     else

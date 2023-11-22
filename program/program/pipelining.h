@@ -3,6 +3,7 @@
 #include <vector>
 #include <bitset>
 #include <queue>
+#include <string>
 #include "Decode.h"
 #include "execution.h"
 #include "Memory.h"
@@ -15,11 +16,9 @@ extern vector<uint32_t> registers;
 
 pair<bool, int> hazard_checker(vector<Instruction> pipelining)
 {
-    bool HAZ = false;
-    int LOC = -1;
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < pipelining.size(); i++)
     {
-        if (pipelining[i].kind == 7 && i <= 3)
+        if (pipelining[i].kind == "7" && i <= 2)
             return make_pair(true, i); // branch will stall 3 cycles
         string rd = pipelining[i].rd;
         for (int j = 0; j < i; j++)
@@ -39,9 +38,9 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
         cout << "hazard detected\n";
     else
         pipelining.insert(pipelining.begin(), instructions[cycle]); // this line has a bug WIP
-    if (pipelining[4].instruction_name != "" && location < 4)
+    if (pipelining.size() >= 5 && location < 4)
     {
-        switch (pipelining[4].kind)
+        switch (std::stoi(pipelining[4].kind))
         {
         case 1:
             Add_wb(pipelining[4]);
@@ -92,11 +91,11 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             Sltiu_wb(pipelining[4]);
             break;
         }
-        pipelines[5] = pipelines[4];
+        pipelining[5] = pipelining[4];
     }
-    if (pipelining[3].instruction_name != "" && location < 3)
+    if (pipelining.size() >= 4 && location < 3)
     {
-        switch (pipelining[3].kind)
+        switch (std::stoi(pipelining[3].kind))
         {
         case 5:
             pipelining[3].LMD = Lw_mem(pipelining[3]);
@@ -108,11 +107,11 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             pipelining[3].LMD = Beq_mem(pipelining[3]);
             break;
         }
-        pipelines[4] = pipelines[3];
+        pipelining[4] = pipelining[3];
     }
-    if (pipelining[2].instruction_name != "" && location < 2)
+    if (pipelining.size() >= 3 && location < 2)
     {
-        switch (pipelining[2].kind)
+        switch (std::stoi(pipelining[2].kind))
         {
         case 1:
             pipelining[2].ALUOutput = Add_ex(pipelining[2]);
@@ -163,10 +162,15 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             pipelining[2].ALUOutput = Sltiu_ex(pipelining[2]);
             break;
         }
-        pipelines[3] = pipelines[2];
+        pipelining[3] = pipelining[2];
     }
-    pipelines[2] = pipelines[1];
-    pipelines[1] = pipelines[0];
-    pipelines.erase(pipelines.begin() + 5);
+    if (!hazard)
+    {
+        if (pipelining.size() >= 3)
+            pipelining[2] = pipelining[1];
+        pipelining[1] = pipelining[0];
+    }
+    if (pipelining.size() >= 6)
+        pipelining.erase(pipelining.begin() + 5);
     return pipelining;
 }

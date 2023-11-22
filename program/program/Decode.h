@@ -24,7 +24,7 @@ public:
 	int ALUOutput = 0;				 // the ALUOutput
 	long long int mul_ALUOutput = 0; // this is the ALUOutput for multiplication
 	int LMD = 0;					 // this is the data that load from mem to the register
-	int kind = 0;					 // this shows the instruction is e.g. add = 1 , sub = 2.
+	string kind = "";				 // this shows the instruction is e.g. add = 1 , sub = 2.
 	int now = 0;					 // this shows the instruction is nth instruction.
 };
 

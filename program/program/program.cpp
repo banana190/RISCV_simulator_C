@@ -21,6 +21,7 @@ int instructionMode()
     // original_instruction and decoded_instruction are both empty.
     // I'll figure out the input format is "sample.g" or not tmrw.
     unsigned int cycle;
+    pipelines.push_back(decoded_instruction[0]);
     for (cycle = 0; cycle <= (original_instruction.size() + 3); cycle++)
     {
         pipelines = run_pipelining(decoded_instruction, pipelines, cycle);
