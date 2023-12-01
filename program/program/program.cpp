@@ -20,12 +20,26 @@ int instructionMode()
 {
     // original_instruction and decoded_instruction are both empty.
     // I'll figure out the input format is "sample.g" or not tmrw.
+    // update : we should make a txt file to store the instructions.
     unsigned int cycle;
-    pipelines.push_back(decoded_instruction[0]);
-    for (cycle = 0; cycle <= (original_instruction.size() + 3); cycle++)
+    for (cycle = 0; cycle >= 0; cycle++)
     {
         pipelines = run_pipelining(decoded_instruction, pipelines, cycle);
+        if (pipelines.size() >= 5)
+        {
+            int empty = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                // be sure that there is all empty instructions in vector.
+                if (pipelines[i].kind == "17")
+                    empty++;
+            }
+            if (empty == 5)
+                break;
+        }
     }
+    pipelines.erase(pipelines.begin(), pipelines.end());
+    cout << "Using " << cycle << " cycles" << endl;
     return 0;
 }
 
@@ -80,6 +94,12 @@ int main()
             break;
         case 6:
             decoded_instruction = decode(original_instruction);
+            // linking the instruction
+            for (int i = 0; i < decoded_instruction.size() - 1; ++i)
+            {
+                decoded_instruction[i].nextInstruction = &decoded_instruction[i + 1];
+            }
+            decoded_instruction.back().nextInstruction = nullptr;
             break;
         case 7:
             decode(original_instruction);

@@ -130,7 +130,7 @@ Instruction decode_r(vector<string> s)
     ins.opcode = instruction_template.find(s[0])->second[2];
     ins.func7 = instruction_template.find(s[0])->second[3];
     ins.func3 = instruction_template.find(s[0])->second[4];
-    ins.kind = stoi(instruction_template.find(s[0])->second[5]);
+    ins.kind = instruction_template.find(s[0])->second[5];
 
     // x0,x0,x0 -> [x0, x0, x0]
     vector<string> split_result = split(s[1], ',');

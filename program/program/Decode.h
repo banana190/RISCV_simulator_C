@@ -7,6 +7,7 @@ using namespace std;
 class Instruction
 {
 public:
+	Instruction *nextInstruction = nullptr;
 	string original_ins = "";	  // add x0,x0,x0
 	string type = "";			  // R
 	string instruction_name = ""; // add

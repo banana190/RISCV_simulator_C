@@ -16,28 +16,51 @@ extern vector<uint32_t> registers;
 
 pair<bool, int> hazard_checker(vector<Instruction> pipelining)
 {
-    for (int i = 0; i < pipelining.size(); i++)
+    for (int i = pipelining.size() - 1; i >= 0; i--)
     {
         if (pipelining[i].kind == "7" && i <= 2)
             return make_pair(true, i); // branch will stall 3 cycles
         string rd = pipelining[i].rd;
-        for (int j = 0; j < i; j++)
+        for (int j = i - 1; j >= 0; j--)
         {
             string rs1 = pipelining[j].rs1;
             string rs2 = pipelining[j].rs2;
-            if (rd == rs1 || rd == rs2)
-                return make_pair(true, i);
+            if (rd == rs1 && rd != "" || rd == rs2 && rd != "")
+                return make_pair(true, j);
         }
     }
     return make_pair(false, -1);
 }
 vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Instruction> pipelining, int cycle)
 {
+    bool first = false;
+    Instruction bubble;
+    bubble.kind = "17"; // empty kind
+    // this is fetching the first instruction
+    if (pipelining.empty())
+    {
+        pipelining.push_back(instructions[0]);
+        first = true;
+    }
+
     auto [hazard, location] = hazard_checker(pipelining);
+    // if there is a hazard on location 2:stall until the hazard gone
     if (hazard)
+    {
         cout << "hazard detected\n";
-    else
-        pipelining.insert(pipelining.begin(), instructions[cycle]); // this line has a bug WIP
+        if (location >= 1)
+            pipelining.insert(pipelining.begin() + 2, bubble);
+    }
+
+    if (pipelining[0].nextInstruction != nullptr && !first && location < 1)
+    {
+        pipelining.insert(pipelining.begin(), *(pipelining[0].nextInstruction));
+    }
+    else if (pipelining[0].nextInstruction == nullptr && location < 1)
+    {
+        pipelining.insert(pipelining.begin(), bubble);
+    }
+
     if (pipelining.size() >= 5 && location < 4)
     {
         switch (std::stoi(pipelining[4].kind))
@@ -91,7 +114,6 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             Sltiu_wb(pipelining[4]);
             break;
         }
-        pipelining[5] = pipelining[4];
     }
     if (pipelining.size() >= 4 && location < 3)
     {
@@ -107,7 +129,6 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             pipelining[3].LMD = Beq_mem(pipelining[3]);
             break;
         }
-        pipelining[4] = pipelining[3];
     }
     if (pipelining.size() >= 3 && location < 2)
     {
@@ -162,13 +183,6 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             pipelining[2].ALUOutput = Sltiu_ex(pipelining[2]);
             break;
         }
-        pipelining[3] = pipelining[2];
-    }
-    if (!hazard)
-    {
-        if (pipelining.size() >= 3)
-            pipelining[2] = pipelining[1];
-        pipelining[1] = pipelining[0];
     }
     if (pipelining.size() >= 6)
         pipelining.erase(pipelining.begin() + 5);
