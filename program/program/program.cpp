@@ -18,13 +18,19 @@ vector<Instruction> decoded_instruction;
 
 int instructionMode()
 {
+    return 0;
+}
+
+int cycleMode()
+{
     // original_instruction and decoded_instruction are both empty.
     // I'll figure out the input format is "sample.g" or not tmrw.
     // update : we should make a txt file to store the instructions.
     unsigned int cycle;
     for (cycle = 0; cycle >= 0; cycle++)
     {
-        pipelines = run_pipelining(decoded_instruction, pipelines, cycle);
+
+        pipelines = run_pipelining(decoded_instruction, pipelines);
         if (pipelines.size() >= 5)
         {
             int empty = 0;
@@ -40,11 +46,6 @@ int instructionMode()
     }
     pipelines.erase(pipelines.begin(), pipelines.end());
     cout << "Using " << cycle << " cycles" << endl;
-    return 0;
-}
-
-int cycleMode()
-{
     return 0;
 }
 
@@ -66,6 +67,11 @@ int main()
         cout << "1 Instruction mode\n";
         cout << "2 Cycle mode\n";
         cout << "3 exit\n";
+        cout << "4 key instruction mode\n";
+        cout << "5 print instruction\n";
+        cout << "6 decode\n";
+        cout << "7 ?\n";
+        cout << "8 read instruction.txt\n";
 
         cin >> mode;
         switch (mode)
@@ -104,7 +110,18 @@ int main()
         case 7:
             decode(original_instruction);
             break;
-
+        case 8:
+            original_instruction = fetch_txt();
+            decoded_instruction = decode(original_instruction);
+            // linking the instruction
+            for (int i = 0; i < decoded_instruction.size() - 1; ++i)
+            {
+                decoded_instruction[i].nextInstruction = &decoded_instruction[i + 1];
+            }
+            decoded_instruction.back().nextInstruction = nullptr;
+            break;
+        case 9:
+            break;
         default:
             cout << "Wrong Number\n";
             flag = false;

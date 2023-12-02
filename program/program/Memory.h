@@ -18,11 +18,11 @@ int Lw_mem(Instruction loading)
 
 void Sw_mem(Instruction storing)
 {
-    int rd = std::bitset<32>(storing.rd).to_ulong();
-    memory[storing.ALUOutput + 3] = (registers[rd] >> 24) & 0xFF;
-    memory[storing.ALUOutput + 2] = (registers[rd] >> 16) & 0xFF;
-    memory[storing.ALUOutput + 1] = (registers[rd] >> 8) & 0xFF;
-    memory[storing.ALUOutput] = registers[rd] & 0xFF;
+    int rs1 = std::bitset<32>(storing.rs1).to_ulong();
+    memory[storing.ALUOutput + 3] = (registers[rs1] >> 24) & 0xFF;
+    memory[storing.ALUOutput + 2] = (registers[rs1] >> 16) & 0xFF;
+    memory[storing.ALUOutput + 1] = (registers[rs1] >> 8) & 0xFF;
+    memory[storing.ALUOutput] = registers[rs1] & 0xFF;
 }
 
 int Beq_mem(Instruction branching)

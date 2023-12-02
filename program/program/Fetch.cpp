@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <conio.h>
@@ -27,5 +28,24 @@ vector<string> fetch1()
         s.push_back(ins);
     }
     cout << "\n";
+    return s;
+}
+
+vector<string> fetch_txt()
+{
+    string ins;
+    fstream newfile;
+    vector<string> s;
+    newfile.open("sample.txt", ios::in);
+    if (newfile.is_open())
+    {
+        cout << "Instructions:\n";
+        while (getline(newfile, ins))
+        {
+            cout << ins << endl;
+            s.push_back(ins);
+        }
+    }
+    newfile.close();
     return s;
 }

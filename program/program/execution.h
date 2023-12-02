@@ -71,9 +71,9 @@ int Lw_ex(Instruction loading)
 int Sw_ex(Instruction storing)
 {
     // int rd = std::bitset<32>(storing.rd).to_ulong();
-    int rs1 = std::bitset<32>(storing.rs1).to_ulong();
+    int rs2 = std::bitset<32>(storing.rs2).to_ulong();
     int imm = std::bitset<32>(storing.imm).to_ulong();
-    int ALUOutput = registers[rs1] + imm;
+    int ALUOutput = registers[rs2] + imm;
     return ALUOutput;
 }
 int Beq_ex(Instruction branching)
@@ -90,10 +90,10 @@ int Lui_ex(Instruction loading_upper)
     // int temp = std::bitset<32>(loading_upper.rd).to_ulong();
     std::bitset<32> imm(loading_upper.imm);
     std::bitset<32> rd = imm << 12; // shift 12 bit
-    for (int i = 20; i < 32; i++)
-    {
-        rd[i] = 0; // clear 12 bit
-    }
+    // for (int i = 20; i < 32; i++)
+    // {
+    //     rd[i] = 0; // clear 12 bit
+    // }
     // registers[temp] = rd.to_ulong(); WB
     int ALUOutput = rd.to_ulong();
     return ALUOutput;

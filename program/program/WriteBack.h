@@ -104,7 +104,7 @@ void Lw_wb(Instruction loading)
 
 void Sw_wb(Instruction storing)
 {
-    cout << "nothing to do here\n";
+    cout << "storing do nothing here\n";
 }
 
 void Beq_wb(Instruction branching)
