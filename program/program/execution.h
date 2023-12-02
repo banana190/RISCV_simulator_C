@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 #include <bitset>
-#include "32bit_inst_structure.h"
 #include "Decode.h"
 #include <cstdint>
 using std::string;
