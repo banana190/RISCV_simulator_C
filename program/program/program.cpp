@@ -18,6 +18,10 @@ vector<Instruction> decoded_instruction;
 
 int instructionMode()
 {
+    for (int i = 0; i < decoded_instruction.size(); i++)
+    {
+        run_one_inst(decoded_instruction[i]);
+    }
     return 0;
 }
 
