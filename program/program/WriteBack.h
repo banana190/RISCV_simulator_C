@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <vector>
 #include <bitset>
@@ -96,22 +97,18 @@ void Sltiu_wb(Instruction less_than)
 void Lw_wb(Instruction loading)
 {
     int rd = std::bitset<32>(loading.rd).to_ulong();
-    for (int i = 0; i < 4; i++)
-    {
-        registers[rd] |= memory[loading.LMD + i] << (8 * i); // little endian 0A0B0C0D => memory[0] = 0D
-    }
+    registers[rd] = loading.LMD; // little endian 0A0B0C0D => memory[0] = 0D
 }
 
 void Sw_wb(Instruction storing)
 {
-    cout << "storing do nothing here\n";
+    cout << "storing do nothing in write back\n";
 }
 
 void Beq_wb(Instruction branching)
 {
     if (branching.ALUOutput == 1)
     {
-        // WIP
-        //  load the instruction in memory[now+offset]
+        //  write in outside since it should jump immediately after execution?
     }
 }

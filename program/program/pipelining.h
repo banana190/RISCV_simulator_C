@@ -8,6 +8,7 @@
 #include "execution.h"
 #include "Memory.h"
 #include "Writeback.h"
+#include "Display.h"
 using std::queue;
 using std::string;
 using std::vector;
@@ -18,7 +19,7 @@ pair<bool, int> hazard_checker(vector<Instruction> pipelining)
 {
     for (int i = pipelining.size() - 1; i >= 0; i--)
     {
-        if (pipelining[i].kind == "7" && i <= 1)
+        if (pipelining[i].kind == "7")
             return make_pair(true, i - 1); // branch will stall 3 cycles
         string rd = pipelining[i].rd;
         for (int j = i - 1; j >= 1; j--)
@@ -33,6 +34,8 @@ pair<bool, int> hazard_checker(vector<Instruction> pipelining)
 }
 vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Instruction> pipelining)
 {
+    if (pipelining.size() >= 6)
+        pipelining.erase(pipelining.begin() + 5);
     bool first = false;
     Instruction bubble;
     bubble.kind = "17"; // empty kind
@@ -86,6 +89,21 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             break;
         case 7:
             Beq_wb(pipelining[4]);
+            if (pipelining[4].ALUOutput == 1)
+            {
+                pipeline_print(pipelining);
+                int LMD = pipelining[4].LMD;
+                int size = pipelining.size();
+                for (int i = 0; i < size; i++)
+                {
+                    pipelining.erase(pipelining.begin());
+                }
+                pipelining.push_back(instructions[LMD]);
+                for (int i = 0; i < 4; i++)
+                {
+                    pipelining.push_back(bubble);
+                }
+            }
             break;
         case 8:
             Lui_wb(pipelining[4]);
@@ -155,20 +173,6 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             break;
         case 7:
             pipelining[2].ALUOutput = Beq_ex(pipelining[2]);
-            if (pipelining[2].ALUOutput == 1)
-            {
-                int imm = std::bitset<32>(pipelining[2].imm).to_ulong();
-                int size = pipelining.size();
-                for (int i = 0; i < size; i++)
-                {
-                    pipelining.erase(pipelining.begin());
-                }
-                pipelining.push_back(instructions[imm]);
-                for (int i = 0; i < 4; i++)
-                {
-                    pipelining.push_back(bubble);
-                }
-            }
             break;
         case 8:
             pipelining[2].ALUOutput = Lui_ex(pipelining[2]);
@@ -199,14 +203,11 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             break;
         }
     }
-    if (pipelining.size() >= 6)
-        pipelining.erase(pipelining.begin() + 5);
     return pipelining;
 }
 // single processing
 Instruction run_one_inst(Instruction instructions)
 {
-
     switch (std::stoi(instructions.kind))
     {
     case 1:
