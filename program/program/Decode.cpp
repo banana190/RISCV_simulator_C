@@ -259,6 +259,8 @@ Instruction decode_lui(vector<string> s)
 
 vector<Instruction> decode(vector<string> instruction)
 {
+    // store all instruction
+    vector<Instruction> instructions;
     try
     {
         // store all the jump name and with to fill in address
@@ -266,9 +268,6 @@ vector<Instruction> decode(vector<string> instruction)
         // (0x0) bnq x0,x0,L1  -->jump    store index(0) and "L1"
         // when decode L1, get the L1'saddress and store in 0'address
         map<string, int> jump;
-
-        // store all instruction
-        vector<Instruction> instructions;
 
         // store one instruction
         vector<string> split_result;
@@ -341,5 +340,6 @@ vector<Instruction> decode(vector<string> instruction)
     catch (const exception &e)
     {
         cerr << "Exception caught: " << e.what() << endl;
+        return instructions;
     };
 }
