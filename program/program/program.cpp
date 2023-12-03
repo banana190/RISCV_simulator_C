@@ -51,7 +51,6 @@ int cycleMode()
     unsigned int cycle;
     for (cycle = 0; cycle >= 0; cycle++)
     {
-
         pipelines = run_pipelining(decoded_instruction, pipelines);
         if (pipelines.size() >= 5)
         {
@@ -65,6 +64,46 @@ int cycleMode()
             if (empty == 5)
                 break;
         }
+        for (int k = 0; k < pipelines.size(); k++)
+        {
+            switch (k)
+            {
+            case 0:
+                cout << "\033[0;33mIF stage:\033[0m\n";
+                break;
+            case 1:
+                cout << "\033[0;33mID stage:\033[0m\n";
+                break;
+            case 2:
+                cout << "\033[0;33mEx stage:\033[0m\n";
+                break;
+            case 3:
+                cout << "\033[0;33mMem stage:\033[0m\n";
+                break;
+            case 4:
+                cout << "\033[0;33mWb stage:\033[0m\n";
+                break;
+            }
+            Instruction temp = pipelines[k];
+            if (temp.instruction_name == "beq" && temp.ALUOutput == 1)
+            {
+                int j = std::bitset<32>(temp.imm).to_ulong();
+                cout << "\nThis instruction is: " << temp.original_ins << "\nJump to the " << j + 1 << "th instruction\n";
+                k = j - 1;
+            }
+            else if (temp.instruction_name != "mul")
+            {
+                int output = temp.ALUOutput;
+                cout << "\nThis instruction is: " << temp.original_ins << "\nthe ALUoutput is : " << output << endl;
+            }
+            else
+            {
+                long long int output = temp.mul_ALUOutput;
+                cout << "\nThis instruction is: " << temp.original_ins << "\nthe ALUoutput is : " << output << endl;
+            }
+        }
+        cout << "-------------------------------------------\n";
+        _getch();
     }
     pipelines.erase(pipelines.begin(), pipelines.end());
     cout << "Using " << cycle << " cycles" << endl;
@@ -92,7 +131,7 @@ int main()
         cout << "4 key instruction mode\n";
         cout << "5 print instruction\n";
         cout << "6 decode\n";
-        cout << "7 ?\n";
+        cout << "7 lucky seven\n";
         cout << "8 read instruction.txt\n";
 
         cin >> mode;

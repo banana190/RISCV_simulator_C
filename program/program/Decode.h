@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <String.h>
+#include <string.h>
 
 using namespace std;
 
@@ -20,7 +20,7 @@ public:
 	string imm1 = "";
 	string imm2 = "";
 	string binary_ins = "";
-	string jump = "";
+	string jump = "";				 // name of the branch destination e.g L1, jump , goto
 	string imm = "";				 // the immediate
 	int ALUOutput = 0;				 // the ALUOutput
 	long long int mul_ALUOutput = 0; // this is the ALUOutput for multiplication
