@@ -48,15 +48,16 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
     if (hazard)
     {
         cout << "hazard detected\n";
-        if (location >= 1)
+        if (location >= 1) // insert bubble into ex location
             pipelining.insert(pipelining.begin() + 2, bubble);
     }
 
-    if (pipelining[0].nextInstruction != nullptr && !first && location < 1)
+    // if the hazard instruction is not at decode location, we still can fetch new instructions
+    if (pipelining[0].nextInstruction != nullptr && !first && location < 1) // if there is still have instructions, fetch it.
     {
         pipelining.insert(pipelining.begin(), *(pipelining[0].nextInstruction));
     }
-    else if (pipelining[0].nextInstruction == nullptr && location < 1)
+    else if (pipelining[0].nextInstruction == nullptr && location < 1) // if there is no instruction, insert bubble
     {
         pipelining.insert(pipelining.begin(), bubble);
     }
@@ -238,7 +239,7 @@ Instruction run_one_inst(Instruction instructions)
         instructions.ALUOutput = Beq_ex(instructions);
         if (instructions.ALUOutput == 1)
         {
-                }
+        }
         instructions.LMD = Beq_mem(instructions);
         Beq_wb(instructions);
 
