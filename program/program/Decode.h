@@ -26,7 +26,7 @@ public:
 	long long int mul_ALUOutput = 0; // this is the ALUOutput for multiplication
 	int LMD = 0;					 // this is the data that load from mem to the register
 	string kind = "";				 // this shows the instruction is e.g. add = 1 , sub = 2.
-	int now = 0;					 // this shows the instruction is nth instruction.
+	int state = 1;					 // this is the state
 };
 
 vector<Instruction> decode(vector<string> instruction);

@@ -18,8 +18,8 @@ pair<bool, int> hazard_checker(vector<Instruction> pipelining)
 {
     for (int i = pipelining.size() - 1; i >= 0; i--)
     {
-        if (pipelining[i].kind == "7" && i <= 2)
-            return make_pair(true, i); // branch will stall 3 cycles
+        if (pipelining[i].kind == "7" && i <= 1)
+            return make_pair(true, i - 1); // branch will stall 3 cycles
         string rd = pipelining[i].rd;
         for (int j = i - 1; j >= 1; j--)
         {
@@ -154,6 +154,20 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
             break;
         case 7:
             pipelining[2].ALUOutput = Beq_ex(pipelining[2]);
+            if (pipelining[2].ALUOutput == 1)
+            {
+                int imm = std::bitset<32>(pipelining[2].imm).to_ulong();
+                int size = pipelining.size();
+                for (int i = 0; i < size; i++)
+                {
+                    pipelining.erase(pipelining.begin());
+                }
+                pipelining.push_back(instructions[imm]);
+                for (int i = 0; i < 4; i++)
+                {
+                    pipelining.push_back(bubble);
+                }
+            }
             break;
         case 8:
             pipelining[2].ALUOutput = Lui_ex(pipelining[2]);
@@ -189,7 +203,7 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
     return pipelining;
 }
 // single processing
-void run_one_inst(Instruction instructions)
+Instruction run_one_inst(Instruction instructions)
 {
 
     switch (std::stoi(instructions.kind))
@@ -207,6 +221,7 @@ void run_one_inst(Instruction instructions)
         Addi_wb(instructions);
         break;
     case 4:
+        instructions.mul_ALUOutput = Mul_ex(instructions);
         Mul_wb(instructions);
         break;
     case 5:
@@ -221,8 +236,12 @@ void run_one_inst(Instruction instructions)
         break;
     case 7:
         instructions.ALUOutput = Beq_ex(instructions);
+        if (instructions.ALUOutput == 1)
+        {
+                }
         instructions.LMD = Beq_mem(instructions);
         Beq_wb(instructions);
+
         break;
     case 8:
         instructions.ALUOutput = Lui_ex(instructions);
@@ -261,4 +280,5 @@ void run_one_inst(Instruction instructions)
         Sltiu_wb(instructions);
         break;
     }
+    return instructions;
 }

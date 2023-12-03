@@ -282,10 +282,10 @@ vector<Instruction> decode(vector<string> instruction)
                 if (jump.find(split_result[0]) != jump.end())
                 {
                     int previous_instruction = jump.find(split_result[0])->second;
-                    instructions[previous_instruction].imm1 = change_decimal_to_binary(to_string(i), 7);
-                    instructions[previous_instruction].imm2 = change_decimal_to_binary(to_string(i), 5);
+                    instructions[previous_instruction].imm = change_decimal_to_binary(to_string(i), 12);
+                    instructions[previous_instruction].imm1 = instructions[previous_instruction].imm.substr(0, 7);
+                    instructions[previous_instruction].imm2 = instructions[previous_instruction].imm.substr(7, 5);
                     instructions[previous_instruction].binary_ins = instructions[previous_instruction].imm1 + instructions[previous_instruction].rs2 + instructions[previous_instruction].rs1 + instructions[previous_instruction].func3 + instructions[previous_instruction].imm2 + instructions[previous_instruction].opcode;
-                    ;
                 }
                 split_result.erase(split_result.begin());
             }

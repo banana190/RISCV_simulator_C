@@ -20,7 +20,25 @@ int instructionMode()
 {
     for (int i = 0; i < decoded_instruction.size(); i++)
     {
-        run_one_inst(decoded_instruction[i]);
+        Instruction temp;
+        temp = run_one_inst(decoded_instruction[i]);
+        if (temp.instruction_name == "beq" && temp.ALUOutput == 1)
+        {
+            int j = std::bitset<32>(temp.imm).to_ulong();
+            cout << "\nThis instruction is: " << temp.original_ins << "\nJump to the " << j + 1 << "th instruction\n";
+            i = j - 1;
+        }
+        else if (temp.instruction_name != "mul")
+        {
+            int output = temp.ALUOutput;
+            cout << "\nThis instruction is: " << temp.original_ins << "\nthe ALUoutput is : " << output << endl;
+        }
+        else
+        {
+            long long int output = temp.mul_ALUOutput;
+            cout << "\nThis instruction is: " << temp.original_ins << "\nthe ALUoutput is : " << output << endl;
+        }
+        _getch();
     }
     return 0;
 }
