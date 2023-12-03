@@ -50,7 +50,7 @@ vector<Instruction> run_pipelining(vector<Instruction> instructions, vector<Inst
     // if there is a hazard on location 2:stall until the hazard gone
     if (hazard)
     {
-        cout << "hazard detected\n";
+        cout << "\033[0;31m\n!!!Hazard Detected!!!\033[0m\n\n";
         if (location >= 1) // insert bubble into ex location
             pipelining.insert(pipelining.begin() + 2, bubble);
     }

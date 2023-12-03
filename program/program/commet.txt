@@ -1,18 +1,18 @@
-// x4 = 4
-// x7 = 7
-// x11 = 4 + 7 = 11
-// mem[44:47] = 11
-// x17 = mem[44:47] = 11 this is not hazard.
-// x18 = 11 * 11 = 121
-// x8 = 7<<4 = 112
-// x6 = 1 (112<180)
-// jump if 0=0 change this line to access other instruction
-// x3 = 11 and 7 = 3
-// x30 = 305,397,760 (0x12345000)
-// x30 = 305,419,896 (0x12345678)
-// x2 = 11 and 6 = 2
-// x15 = 11 or 7 = 15
-// x31 = 15 or 16 = 31
-// x31 = 31>>2 = 7
-// x1 = 4 - 3 = 1
-// L1 x5 = 0+0 = 0 not 3 or 5 	
+addi x4,x0,4 	// x4 = 4
+addi x7,x0,7	// x7 = 7
+add x11,x4,x7	// x11 = 4 + 7 = 11
+sw x11,44(x0)	// mem[44:47] = 11
+lw x17,44(x0)	// x17 = mem[44:47] = 11 this is not hazard.
+mul x18,x11,x17	// x18 = 11 * 11 = 121
+sll x8,x7,x4	// x8 = 7<<4 = 112
+slti x6,x8,180	// x6 = 1 (112<180)
+beq x0,x0,L1	// jump if 0=0 change this line to access other instruction
+and x3,x11,x7// x3 = 11 and 7 = 3
+lui x30,74565// x30 = 305,397,760 (0x12345000)
+addi x30,x30,1656// x30 = 305,419,896 (0x12345678)
+andi x2,x11,6// x2 = 11 and 6 = 2
+or x15,x11,x7// x15 = 11 or 7 = 15
+ori x31,x15,16// x31 = 15 or 16 = 31
+srl x31,x31,x2// x31 = 31>>2 = 7
+sub x1,x4,x3// x1 = 4 - 3 = 1
+L1:add x5,x2,x3// L1 x5 = 0+0 = 0 not 3 or 5 	
