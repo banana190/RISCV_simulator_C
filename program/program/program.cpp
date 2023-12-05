@@ -22,6 +22,8 @@ int instructionMode()
     int cycle = 0;
     for (i = 0; i < decoded_instruction.size(); i++)
     {
+
+        cout << "\nThis is the " << cycle << " cycle\n";
         Instruction temp;
         temp = run_one_inst(decoded_instruction[i]);
         i = instruction_mode_print(temp, i);
@@ -39,6 +41,7 @@ int cycleMode()
     unsigned int cycle;
     for (cycle = 0; cycle >= 0; cycle++)
     {
+        cout << "This is the " << cycle << " cycle\n";
         pipelines = run_pipelining(decoded_instruction, pipelines);
         if (pipelines.size() >= 5)
         {
