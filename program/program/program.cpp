@@ -19,13 +19,15 @@ vector<Instruction> decoded_instruction;
 int instructionMode()
 {
     int i;
+    int cycle = 0;
     for (i = 0; i < decoded_instruction.size(); i++)
     {
         Instruction temp;
         temp = run_one_inst(decoded_instruction[i]);
         i = instruction_mode_print(temp, i);
+        cycle += 5;
     }
-    cout << "Using " << i << " cycles\n";
+    cout << "Using " << cycle << " cycles\n";
     return 0;
 }
 
